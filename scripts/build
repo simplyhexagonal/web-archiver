@@ -1,0 +1,65 @@
+#!/usr/bin/env node
+
+const glob = require('glob');
+const rimraf = require('rimraf');
+const { buildSync } = require('esbuild');
+const ts = require("typescript");
+
+const {
+  dependencies,
+  devDependencies,
+} = require('../package.json');
+
+const define = {};
+
+const envVarWhitelist = [];
+
+for (const k of envVarWhitelist) {
+  define[`process.env.${k}`] = JSON.stringify(process.env[k]);
+}
+
+let result;
+let program;
+
+rimraf.sync('dist/*');
+
+glob.sync(`${process.cwd()}/src/**/index.ts`, {}).forEach((filePath) => {
+  const fileSrcPath = `src/${filePath.split('/src/')[1]}`;
+  const fileDir = fileSrcPath.replace(/^src\//, '').replace(/\/[^\/]+.ts$/, '').replace(/^[^\/]+.ts$/, '.');
+  const fileName = fileSrcPath.replace(/^.+\/([^\/]+).ts$/, '$1');
+
+  console.log(fileSrcPath);
+
+  const options = {
+    entryPoints: [fileSrcPath],
+    outfile:`./dist/${fileDir}/${fileName}.js`,
+    bundle: true,
+    external: [
+      ...Object.keys(dependencies || {}),
+      ...Object.keys(devDependencies || {}),
+    ],
+    platform: 'node',
+    sourcemap: true,
+    define,
+  };
+
+  result = buildSync(options);
+
+  console.log(result);
+});
+
+program = ts.createProgram(
+  {
+    rootNames: [`${process.cwd()}/src/index.ts`],
+    options: {
+      rootDir: `${process.cwd()}/src`, 
+      outDir: `${process.cwd()}/dist`,
+      declaration: true,
+      emitDeclarationOnly: true,
+    }
+  }
+);
+
+result = program.emit();
+
+console.log(JSON.stringify(result));

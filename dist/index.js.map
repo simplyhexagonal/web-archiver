@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../src/index.ts"],
+  "sourcesContent": ["// @ts-ignore\nimport { version } from '../package.json';\n\nclass Package {\n  static version = version;\n\n  sum = async (a: number, b: number) => Promise.resolve(a + b);\n}\n\nexport default Package;\n"],
+  "mappings": ";;;;;;;;;AAAA;AAAA;AAAA;;;;;;AAGA,oBAAc;AAAA,EAAd,cAHA;AAME,eAAM,OAAO,GAAW,MAAc,QAAQ,QAAQ,IAAI;AAAA;AAAA;AAFnD,AADT,QACS,UAAU;AAKnB,IAAO,cAAQ;",
+  "names": []
+}
