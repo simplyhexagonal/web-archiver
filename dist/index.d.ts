@@ -1,5 +1,22 @@
-declare class Package {
-    static version: any;
-    sum: (a: number, b: number) => Promise<number>;
+import Logger from '@simplyhexagonal/logger';
+import { Browser, Page } from 'puppeteer';
+export interface WebArchiverRunOptions {
+    dryRun?: boolean;
+    urls: string[];
+    outDir: string;
+    recursive: boolean;
+    maxRecursiveDepth: number;
+    allowNavigateAway?: boolean;
+    blackListUrls?: string[];
 }
-export default Package;
+export declare const UTF_RESOURCE_TYPES: string[];
+declare class WebArchiver {
+    static version: any;
+    logger: Logger;
+    browser?: Browser;
+    page?: Page;
+    constructor();
+    launchBrowser(): Promise<void>;
+    run({ dryRun, urls, outDir, recursive, maxRecursiveDepth, allowNavigateAway, blackListUrls, }: WebArchiverRunOptions): Promise<void>;
+}
+export default WebArchiver;
