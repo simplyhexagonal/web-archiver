@@ -14,7 +14,11 @@ import Logger from '@simplyhexagonal/logger';
 import { multiReplaceSync } from '@simplyhexagonal/multi-replace';
 import puppeteer, {
   Browser,
+  BrowserConnectOptions,
+  BrowserLaunchArgumentOptions,
+  LaunchOptions,
   Page,
+  Product,
 } from 'puppeteer';
 
 export interface WebArchiverRunOptions {
@@ -51,14 +55,22 @@ class WebArchiver {
     }
   }
 
-  async launchBrowser() {
+  async launchBrowser(options?: LaunchOptions & BrowserLaunchArgumentOptions & BrowserConnectOptions & {
+      product?: Product;
+      extraPrefsFirefox?: Record<string, unknown>;
+  }) {
     const { logger } = this;
 
     logger.debug('Launching browser...');
 
     logger.time('Launched browser in');
 
-    this.browser = await puppeteer.launch({ headless: true });
+    this.browser = await puppeteer.launch(
+      {
+        headless: true,
+        ...options
+      },
+    );
 
     const page = await this.browser.newPage();
 
