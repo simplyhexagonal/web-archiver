@@ -20,6 +20,7 @@ import puppeteer, {
 export interface WebArchiverRunOptions {
   dryRun?: boolean;
   urls: string[];
+  referer?: string;
   outDir: string;
   recursive: boolean;
   maxRecursiveDepth: number;
@@ -71,6 +72,7 @@ class WebArchiver {
   async run({
     dryRun,
     urls,
+    referer,
     outDir,
     recursive,
     maxRecursiveDepth,
@@ -238,6 +240,7 @@ class WebArchiver {
 
           const result = await page.goto(u, {
             waitUntil: 'networkidle0',
+            referer,
           });
 
           processedPages.push(u);
