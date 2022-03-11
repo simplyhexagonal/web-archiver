@@ -3,6 +3,7 @@ import { Browser, Page } from 'puppeteer';
 export interface WebArchiverRunOptions {
     dryRun?: boolean;
     urls: string[];
+    referer?: string;
     outDir: string;
     recursive: boolean;
     maxRecursiveDepth: number;
@@ -17,6 +18,6 @@ declare class WebArchiver {
     page?: Page;
     constructor();
     launchBrowser(): Promise<void>;
-    run({ dryRun, urls, outDir, recursive, maxRecursiveDepth, allowNavigateAway, blackListUrls, }: WebArchiverRunOptions): Promise<void>;
+    run({ dryRun, urls, referer, outDir, recursive, maxRecursiveDepth, allowNavigateAway, blackListUrls, }: WebArchiverRunOptions): Promise<void>;
 }
 export default WebArchiver;

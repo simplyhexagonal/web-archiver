@@ -29,7 +29,7 @@ __export(exports, {
 });
 
 // package.json
-var version = "0.9.1";
+var version = "0.9.2";
 
 // src/index.ts
 var import_path = __toModule(require("path"));
@@ -65,6 +65,7 @@ var _WebArchiver = class {
   async run({
     dryRun,
     urls,
+    referer,
     outDir,
     recursive,
     maxRecursiveDepth,
@@ -170,7 +171,8 @@ ${urls.join("\n")}`);
           await logger.info(`Visiting: ${u}`);
           processedUrls.push(`${url.host}${url.pathname}`);
           const result = await page.goto(u, {
-            waitUntil: "networkidle0"
+            waitUntil: "networkidle0",
+            referer
           });
           processedPages.push(u);
           if (result.status() === 200) {
