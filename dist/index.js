@@ -29,7 +29,7 @@ __export(exports, {
 });
 
 // package.json
-var version = "0.9.2";
+var version = "0.9.3";
 
 // src/index.ts
 var import_path = __toModule(require("path"));
@@ -89,6 +89,9 @@ var _WebArchiver = class {
       }
     }
     if (page) {
+      if (referer) {
+        page.setExtraHTTPHeaders({ referer });
+      }
       const hosts = urls.map((url) => new import_url.URL(url).host);
       const resourceTypeMap = {};
       const filesToDownload = [];
