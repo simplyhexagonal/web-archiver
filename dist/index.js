@@ -29,7 +29,7 @@ __export(exports, {
 });
 
 // package.json
-var version = "0.9.3";
+var version = "0.9.4";
 
 // src/index.ts
 var import_path = __toModule(require("path"));
@@ -52,11 +52,14 @@ var _WebArchiver = class {
       return webArchiverInstance;
     }
   }
-  async launchBrowser() {
+  async launchBrowser(options) {
     const { logger } = this;
     logger.debug("Launching browser...");
     logger.time("Launched browser in");
-    this.browser = await import_puppeteer.default.launch({ headless: true });
+    this.browser = await import_puppeteer.default.launch({
+      headless: true,
+      ...options
+    });
     const page = await this.browser.newPage();
     await page.setRequestInterception(true);
     this.page = page;
