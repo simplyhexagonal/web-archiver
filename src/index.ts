@@ -99,6 +99,10 @@ class WebArchiver {
     }
 
     if (page) {
+      if (referer) {
+        page.setExtraHTTPHeaders({ referer });
+      }
+
       const hosts = urls.map((url) => (new URL(url)).host);
       const resourceTypeMap: any = {};
       const filesToDownload: string[] = [];
